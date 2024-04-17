@@ -12,7 +12,7 @@
 **--------------------------------------
 ** Data
 **--------------------------------------  
-// use "${CPF_out}/CPFv${cpfv}.dta", clear  	
+// use "${CPF_out}\CPFv${cpfv}.dta", clear  	
 
 **--------------------------------------
 ** Remove Val Lables
@@ -182,18 +182,6 @@ lab var relig_KOR "Religious participation (KOR only)"
 // lab var wtcp "Cross-sectional population weight"
 
 // lab var volunt "Volunteering"
-
-lab var kidsn_hh_02   "Number of Children in HH aged 0-2"
-lab var kidsn_hh_34   "Number of Children in HH aged 3-4"
-lab var kidsn_hh_04   "Number of Children in HH aged 0-4"
-lab var kidsn_hh_510  "Number of Children in HH aged 5-10"
-lab var kidsn_hh_511  "Number of Children in HH aged 5-11"
-
-lab var kids_hh_04    "Any children in HH aged 0-4?"
-lab var youngest_hh   "Age of the youngest HH member"
-
-lab var kidsown_04   "Any own children aged 0-4?"
-
 
 *############################
 *#							#
@@ -572,8 +560,7 @@ lab val ethn ethnicity
 lab val relig relig
 lab val relig_att attendance
 // lab val volunt yesno
-lab val kids_hh_04   yesno
-lab val kidsown_04   yesno
+
 
 
 *############################
@@ -581,4 +568,4 @@ lab val kidsown_04   yesno
 *#	Save					#
 *#							#
 *############################
-save "${CPF_out}/CPFv${cpfv}.dta", replace  		
+save "${CPF_out}\CPFv${cpfv}.dta", replace  		

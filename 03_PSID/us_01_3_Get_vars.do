@@ -40,7 +40,7 @@ program define combvars
 		sort x11101ll
 		psid long
 // 		reshape long  x11102_ xsqnr_ `namelist'  , i(x11101ll) j(year)
-		save "${psid_out_work}/temp_`namelist'.dta", replace 
+		save "${psid_out_work}\temp_`namelist'.dta", replace 
 end
 	
 	
@@ -184,9 +184,6 @@ combvars  kidshh , list("[68]V398 [69]V550 [70]V1242 [71]V1945 [72]V2545 [73]V30
  
 // Number of Children Under 18 Living with Family
 
-// Age of Youngest Person Now in the FU Under 18 Years of Age
-combvars  youngest , list("[68]V120 [69]V1013 [70]V1243 [71]V1946 [72]V2546 [73]V3099 [74]V3512 [75]V3925 [76]V4440 [77]V5354 [78]V5854 [79]V6466 [80]V7071 [81]V7662 [82]V8356 [83]V8965 [84]V10423 [85]V11610 [86]V13015 [87]V14118 [88]V15134 [89]V16635 [90]V18053 [91]V19353 [92]V20655 [93]V22410 [94]ER2011 [95]ER5010 [96]ER7010 [97]ER10013 [99]ER13014 [01]ER17017 [03]ER21021 [05]ER25021 [07]ER36021 [09]ER42021 [11]ER47321 [13]ER53021 [15]ER60022 [17]ER66022 [19]ER72022")
- 
 **--------------------------------------
 ** People in HH F14
 **--------------------------------------
@@ -195,8 +192,6 @@ combvars  nphh , list("[68]V115 [69]V549 [70]V1238 [71]V1941 [72]V2541 [73]V3094
  
 //  Number of people (children plus adults) in this FAMILY UNIT (living here) (from listing box)
 
-// Whether any FU members aged 60 or older in the FU in 2020
-// combvars  hhmember60 , list("[99]ER16415 [01]ER20361 [03]ER24066 [05]ER25636 [07]ER36654 [09]ER42673 [11]ER47989 [13]ER53701 [15]ER60716 [17]ER66763 [19]ER72767 [21]ER78844")
 
 **--------------------------------------
 ** Living together with partner  
@@ -1769,10 +1764,10 @@ combvars  isresp , list("[69]ER30031 [70]ER30055 [71]ER30079 [72]ER30104 [73]ER3
 tokenize "${vars}"
 local n : word count ${vars}
 // di `n'
-use "${psid_out_work}/temp_`1'.dta", clear 
+use "${psid_out_work}\temp_`1'.dta", clear 
 local i 2
 while (`i'<=`n') {
-	merge 1:1 x11101ll wave using "${psid_out_work}/temp_`2'.dta" , ///
+	merge 1:1 x11101ll wave using "${psid_out_work}\temp_`2'.dta" , ///
 		keep(1 2 3) nogen 
 		macro shift 1  
 		local ++i
@@ -1781,14 +1776,14 @@ while (`i'<=`n') {
 rename x11101ll pid
 disp "vars: " c(k) "   N: " _N
 *
-save "${psid_out}/us_01.dta", replace 
+save "${psid_out}\us_01.dta", replace 
 
 
 **|=========================================================================|
 **|  Step 4: Add vars constant across all waves (get from long psid_crossy_ind.dta)
 **|=========================================================================|
 
-use "${psid_out}/us_01.dta", clear
+use "${psid_out}\us_01.dta", clear
 *
 merge m:1 pid using "${psid_org}" ,	///
 	keepusing(				///
@@ -1800,8 +1795,6 @@ merge m:1 pid using "${psid_org}" ,	///
 		ER32033				///
 		ER31996 			/// 	SAMPLING ERROR STRATUM
 		ER31997				///		SAMPLING ERROR CLUSTER
-		ER32026				/// YEAR YOUNGEST CHILD BORN
-		ER32025				/// MONTH YOUNGEST CHILD BORN
 		) keep(1 2 3) nogen
 rename ER32000 gender 
 rename ER32022 kids_birth
@@ -1809,21 +1802,21 @@ rename ER30003 head68
 *
 disp "vars: " c(k) "   N: " _N
 *
-save "${psid_out}/us_01.dta", replace 
+save "${psid_out}\us_01.dta", replace 
 
 
 **|=========================================================================|
 **|  Add new time-constant vars - only if necessary 
 **|=========================================================================|
 /*
-use "${psid_out}/us_01.dta", clear
+use "${psid_out}\us_01.dta", clear
 *
 merge m:1 pid using "${psid_org}" ,	///
 	keepusing(						///
 	/**/  	/**/					/// Add itme-block name between /**/ _name_ /**/ 
 		) keep(1 2 3) nogen
 *
-save "${psid_out}/us_01.dta", replace 
+save "${psid_out}\us_01.dta", replace 
 */
 
    
@@ -1838,17 +1831,17 @@ save "${psid_out}/us_01.dta", replace
 /*
 local item_block /**/ 	  	/**/ 		// Add itme-block name between /**/ _name_ /**/ 
 foreach file in `item_block' {
-	use "${psid_out_work}/temp_`file'.dta", clear
+	use "${psid_out_work}\temp_`file'.dta", clear
 	rename x11101ll pid 
-	save "${psid_out_work}/temp_`file'.dta", replace
+	save "${psid_out_work}\temp_`file'.dta", replace
 	}
 	
-use "${psid_out}/us_01.dta", clear
+use "${psid_out}\us_01.dta", clear
 	foreach file in `item_block'  {
-		merge 1:1 pid wave using "${psid_out_work}/temp_`file'.dta" , ///
+		merge 1:1 pid wave using "${psid_out_work}\temp_`file'.dta" , ///
 				keep(1 2 3) nogen 
 }
-save "${psid_out}/us_01.dta", replace 
+save "${psid_out}\us_01.dta", replace 
 */
 
 
@@ -1857,9 +1850,9 @@ save "${psid_out}/us_01.dta", replace
 **|  SAVE
 **|=========================================================================|
 
-save "${psid_out}/us_01.dta", replace 
+save "${psid_out}\us_01.dta", replace 
 
-!del "${psid_out_work}/*.dta"  	// remove files in the temp folder 
+!del "${psid_out_work}\*.dta"  	// remove files in the temp folder 
 	
 	
 

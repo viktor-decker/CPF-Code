@@ -17,7 +17,7 @@
 *#							#
 *############################
 *
-use "${soep_in}/ppathl.dta", clear
+use "${soep_in}\ppathl.dta", clear
 
 keep 					///
 pid hid syear piyear	///
@@ -32,7 +32,7 @@ corigin                 /// COB respondent
 *
 sort  pid syear
 *
-save "${soep_out_work}/gppathl_1.dta", replace  	
+save "${soep_out_work}\gppathl_1.dta", replace  	
 
 
 *############################
@@ -41,11 +41,11 @@ save "${soep_out_work}/gppathl_1.dta", replace
 *#							#
 *############################
 use hid syear hnetto hpop hbleib hhrf using ///
-	"${soep_in}/hpathl.dta", clear
+	"${soep_in}\hpathl.dta", clear
 *
 sort  hid syear
 * 
-save "${soep_out_work}/ghpathl_1.dta", replace  	
+save "${soep_out_work}\ghpathl_1.dta", replace  	
 
 *############################
 *#							#
@@ -53,7 +53,7 @@ save "${soep_out_work}/ghpathl_1.dta", replace
 *#							#
 *############################
 
-use "${soep_in}/pgen.dta", clear
+use "${soep_in}\pgen.dta", clear
 
 keep	pid hid syear	///
 /// incomes 
@@ -85,7 +85,7 @@ pgfamstd
 *
 sort  pid syear
 *
-save "${soep_out_work}/gpgen_1.dta", replace  	
+save "${soep_out_work}\gpgen_1.dta", replace  	
 
 *############################
 *#							#
@@ -95,7 +95,7 @@ save "${soep_out_work}/gpgen_1.dta", replace
 * NOTE: 2002 + only 
 *Starting in 2002 the SOEP health module in the individual questionnaire has *been revised and put into a two year replication period. 
 
-use "${soep_in}/health.dta", clear
+use "${soep_in}\health.dta", clear
 *
 
 *@remove hhnr
@@ -111,7 +111,7 @@ gh_nbs mh_nbs bmi	//	Z-socre - chck descr
 *
 sort  pid syear
 *
-save "${soep_out_work}/ghealth_1.dta", replace  
+save "${soep_out_work}\ghealth_1.dta", replace  
 
 
 *############################
@@ -120,7 +120,7 @@ save "${soep_out_work}/ghealth_1.dta", replace
 *#							#
 *############################
 
-use "${soep_in}/pequiv.dta", clear
+use "${soep_in}\pequiv.dta", clear
 *
 keep	pid hid syear	///
 d11104 		d11109		/// 	 to chck
@@ -131,8 +131,7 @@ e11106 e11107			///
 i11101 i11102 i11110	///
 w11101 w11102 w11103 w11105 w11107 w11108 w11109 w11110 w11111	/// weights
 ijob1 ijob2 iself ioldy ieret iprvp igrv1	///
-m11124 m11125 m11126	 ///
-h11103 h11104 h11105 h11106
+m11124 m11125 m11126	 
 
 *p11101	 
 *d11108 				// edu & hi sch (maybe useful)
@@ -141,14 +140,14 @@ h11103 h11104 h11105 h11106
 sort  pid syear
 *
 
-save "${soep_out_work}/gpequiv_1.dta", replace  
+save "${soep_out_work}\gpequiv_1.dta", replace  
 	
 *############################
 *#							#
 *#		pl.dta				#
 *#							#
 *############################
-use "${soep_in}/pl.dta", clear
+use "${soep_in}\pl.dta", clear
 *
 keep	pid hid syear			///
 /// SAT
@@ -194,7 +193,7 @@ plh0258_h pli0098_h		// Religion
 sort  pid syear
 *
  
-save "${soep_out_work}/gpl_1.dta", replace  
+save "${soep_out_work}\gpl_1.dta", replace  
 
 
 *############################
@@ -202,7 +201,7 @@ save "${soep_out_work}/gpl_1.dta", replace
 *#		pkal.dta			#
 *#							#
 *############################
-use "${soep_in}/pkal.dta", clear
+use "${soep_in}\pkal.dta", clear
 
 keep 					///	INFO abour last year
 pid hid syear 			///
@@ -215,7 +214,7 @@ kal1c01 kal1c02			//  educ, training
 *
 sort  pid syear
 *
-save "${soep_out_work}/gpkal_1.dta", replace  
+save "${soep_out_work}\gpkal_1.dta", replace  
 
 
 
@@ -225,7 +224,7 @@ save "${soep_out_work}/gpkal_1.dta", replace
 *#		biobirth.dta		#
 *#		 					#
 *############################
-use "${soep_in}/biobirth.dta", clear
+use "${soep_in}\biobirth.dta", clear
 
 keep 				///
 pid 	/// @changed
@@ -234,7 +233,7 @@ sumkids		//
 *
 sort  pid
 * 
-save "${soep_out_work}/gbiobirth_1.dta", replace  
+save "${soep_out_work}\gbiobirth_1.dta", replace  
 
 
 *############################
@@ -242,7 +241,7 @@ save "${soep_out_work}/gbiobirth_1.dta", replace
 *#		biol.dta	     	#
 *#		 					#
 *############################
-use "${soep_in}/biol.dta", clear
+use "${soep_in}\biol.dta", clear
 
 keep 				///
 pid hid syear	/// 
@@ -251,7 +250,7 @@ lb0084_h lb0085_h lr2076		/// parents info & mother tongue
 *
 sort  pid
 * 
-save "${soep_out_work}/gbiol_1.dta", replace  
+save "${soep_out_work}\gbiol_1.dta", replace  
 
 
 
@@ -262,10 +261,10 @@ save "${soep_out_work}/gbiol_1.dta", replace
 *#		 					#
 *############################
 * SPELL Data - NOT USEUFL 
-use "${soep_in}/biocouplm.dta", clear
+use "${soep_in}\biocouplm.dta", clear
 keep hhnr pid cid spelltyp
 *
-use "${soep_in}/biocouply.dta", clear
+use "${soep_in}\biocouply.dta", clear
  keep hhnr spelltyp pid cid*/
 
  
@@ -275,7 +274,7 @@ use "${soep_in}/biocouply.dta", clear
 *#		bioparen.dta		#
 *#		 					#
 *############################
-use "${soep_in}/bioparen.dta", clear
+use "${soep_in}\bioparen.dta", clear
 
 keep 				///
 pid 		/// @changed
@@ -289,7 +288,7 @@ forigin morigin /// COB parents
 *
 sort  pid
 * 
-save "${soep_out_work}/gbioparen_1.dta", replace  
+save "${soep_out_work}\gbioparen_1.dta", replace  
 
 **|=========================================================================|
 
@@ -301,37 +300,37 @@ save "${soep_out_work}/gbioparen_1.dta", replace
  
 
 ***** HH + P
-use "${soep_out_work}/gppathl_1.dta", clear
+use "${soep_out_work}\gppathl_1.dta", clear
 
-merge m:1 hid syear using "${soep_out_work}/ghpathl_1.dta" , keep(1 3) nogen	
+merge m:1 hid syear using "${soep_out_work}\ghpathl_1.dta" , keep(1 3) nogen	
 
 **** 
-merge 1:1 pid syear using "${soep_out_work}/gpgen_1.dta" 	, keep(1 3) nogen	
+merge 1:1 pid syear using "${soep_out_work}\gpgen_1.dta" 	, keep(1 3) nogen	
 *
-merge 1:1 pid syear using "${soep_out_work}/ghealth_1.dta" , keep(1 3) nogen	
+merge 1:1 pid syear using "${soep_out_work}\ghealth_1.dta" , keep(1 3) nogen	
 *
-merge 1:1 pid syear using "${soep_out_work}/gpequiv_1.dta" , keep(1 3) nogen	
+merge 1:1 pid syear using "${soep_out_work}\gpequiv_1.dta" , keep(1 3) nogen	
 	
-merge 1:1 pid syear using "${soep_out_work}/gpl_1.dta" 	, keep(1 3) nogen	
+merge 1:1 pid syear using "${soep_out_work}\gpl_1.dta" 	, keep(1 3) nogen	
 	
-merge 1:1 pid syear using "${soep_out_work}/gpkal_1.dta" 	, keep(1 3) nogen	
+merge 1:1 pid syear using "${soep_out_work}\gpkal_1.dta" 	, keep(1 3) nogen	
 	
-merge m:1 pid  		using "${soep_out_work}/gbiobirth_1.dta" , keep(1 3) nogen	
+merge m:1 pid  		using "${soep_out_work}\gbiobirth_1.dta" , keep(1 3) nogen	
 
-merge m:1 pid syear		using "${soep_out_work}/gbiol_1.dta" , keep(1 3) nogen	
+merge m:1 pid syear		using "${soep_out_work}\gbiol_1.dta" , keep(1 3) nogen	
 
-merge m:1 pid  		using "${soep_out_work}/gbioparen_1.dta" , keep(1 3) nogen
+merge m:1 pid  		using "${soep_out_work}\gbioparen_1.dta" , keep(1 3) nogen
 
 ****	
 disp "vars: " c(k) "   N: " _N	
 
 *   ---> 	
-save "${soep_out}/ge_01.dta", replace  	
+save "${soep_out}\ge_01.dta", replace  	
 	
 	
 	
 *** Delete temp files
-!del "${soep_out_work}/*.dta"
+!del "${soep_out_work}\*.dta"
 
 *____________________________________________________________________________
 *--->	END

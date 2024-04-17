@@ -20,7 +20,7 @@
 clear
 local data= "$surveys"	// hilda klips psid rlms shp soep ukhls
 foreach data in  `data' {
-	append 	using "${`data'_out}//${`data'2}_03_CPF.dta"	 
+	append 	using "${`data'_out}\\${`data'2}_03_CPF.dta"	 
 }
 
 
@@ -60,9 +60,7 @@ volunt exppt  ///
 isei* siops* mps* 	///
 widow divor separ fedu* medu* 	///
 ethn* migr* cob* grewup_US  relig* ///
-sampid* ///
-kidsn_hh_02 kidsn_hh_34 kidsn_hh_04  kidsn_hh_510 kidsn_hh_511 ///
-kids_hh_04 youngest_hh oldern_hh70 oldern_hh80 kidsown_04
+sampid*
 		
 keep `r(varlist)'		
 
@@ -144,16 +142,6 @@ kidsn_hh17		 		///
 kidsn_hh15		 		///
 kidsn_all		 		///
 kids_any		 		///
-kidsn_hh_02 			///
-kidsn_hh_34 			/// 			
-kidsn_hh_04 			/// 
-kidsn_hh_510			///
-kidsn_hh_511			///
-kids_hh_04  			///
-kidsown_04			///
-youngest_hh  			///
-oldern_hh70  			///
-oldern_hh80  			///
 nphh		 		///
 /// 6.	Labour market situation		 		///
 emplst5		 		///
@@ -258,5 +246,5 @@ sampid*			///
 ** SAVE 
 **-------------------------------------- 	
 label data "CPF v${cpfv}"	 	
-save "${CPF_out}/CPFv${cpfv}.dta", replace  		
+save "${CPF_out}\CPFv${cpfv}.dta", replace  		
 

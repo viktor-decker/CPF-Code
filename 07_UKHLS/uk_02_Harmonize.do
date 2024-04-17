@@ -16,7 +16,7 @@ clear
 set maxvar 10000
 */
 
-use "${ukhls_out}/uk_01.dta", clear
+use "${ukhls_out}\uk_01.dta", clear
 *
 qui tab wave
 display _newline(1) "   Total ->> Vars: " c(k) "; N: " _N "; Waves: " r(r)  
@@ -241,7 +241,7 @@ replace edu4=edu4c if  (edu4<0 | edu4==.) & edu4c>0 & edu4c<.
 	
 *** edu5
 recode isced (1=1) (2=2) (3 4=3) (5 6=4) (7=5) (0 -7=-1), gen(edu5a) // for waves 1-18
-recode qfhigh_dv (15 96=1) (14=2) (7/13 16=3) (3/6=4) (1 2=5) (-9=-1) (-8=-3), gen(edu5b) // for waves 19+ 
+recode qfhigh_dv (15 96=1) (14=2) (7/13 16=3) (4/6=4) (1 2=5) (-9=-1) (-8=-3), gen(edu5b) // for waves 19+ 
 recode qfhighoth (10 96=1)   (5/9=3) (3 4=4) (1 2=5), gen(edu5c) // special sample w 24, 27
 
 gen edu5=edu5a
@@ -608,21 +608,7 @@ recode nkids_dv (-9=-1), gen(kidsn_hh15) // the total number of children aged 15
 //  	lab var kidsn_hh18   "Number of Children in HH<18" 
  	lab var kidsn_hh15   "Number of Children in HH<15" 
 
-*** New in CPF 1.52
-*
-recode nch02_dv nch34_dv nch511_dv (-9=.)
-gen kidsn_hh_04  =   nch02_dv + nch34_dv
-gen kidsn_hh_511 = 	 nch511_dv
-	
-// 	lab var kidsn_hh_02   "Number of Children in HH aged 0-2"
-// 	lab var kidsn_hh_34   "Number of Children in HH aged 3-4"
-	lab var kidsn_hh_04   "Number of Children in HH aged 0-4"
-	lab var kidsn_hh_511  "Number of Children in HH aged 5-11"
-*
-recode kidsn_hh_04 (0=0)(1/20=1), gen(kids_hh_04)
-	lab var kids_hh_04   "Any children in HH aged 0-4?"
-	lab val kids_hh_04   yesno	
-	
+
 	 
 **--------------------------------------
 ** People in HH  
@@ -1950,13 +1936,13 @@ replace migr=-3 if migr==. & ukborn==-8 //inapplicable
 replace migr=1 if inrange(plbornc, 5, 97) & (migr==. | migr<0)
 
 *fill MV
-mvdecode migr, mv(-9=.a / -8=.b / -3=.c / -1=.d) //temporarily decode missing value specifications
+mvdecode migr, mv(-9=.a \ -8=.b \ -3=.c \ -1=.d) //temporarily decode missing value specifications
 
 	bysort pid: egen temp_migr=mode(migr), maxmode // identify most common response
 	replace migr=temp_migr if (migr==. | migr==.a/.d) & temp_migr>=0 & temp_migr<.
 	replace migr=temp_migr if migr!=temp_migr  // correct inconsistent cases
 	
-mvencode migr, mv(.a=-9 /.b=-8 /.c=-3 /.d=-1) //restore mv
+mvencode migr, mv(.a=-9 \.b=-8 \.c=-3 \.d=-1) //restore mv
 
 lab val migr migr
 
@@ -2293,8 +2279,7 @@ intmonth   jsecu jsecu2	///
 wavey	///
 divor separ widow	///
 migr* ethn* cob*   relig* ///
-nempl isei* siops* mps* fedu* medu* sampid_* ///
-kidsn_hh_04 kidsn_hh_511 kids_hh_04
+nempl isei* siops* mps* fedu* medu* sampid_*
 
 
 order	///
@@ -2314,7 +2299,7 @@ ivfio sampid_*	/// interview statust
 **|=========================================================================|
  
 label data "CPF_UK v1.5"	 	 
-save "${ukhls_out}/uk_02_CPF.dta", replace  	
+save "${ukhls_out}\uk_02_CPF.dta", replace  	
 
 	 
 *____________________________________________________________________________

@@ -15,7 +15,7 @@
 ** Open merged dataset
 **-------------------------------------- 
 * 
-use "${soep_out}/ge_02_CPF.dta", clear  	
+use "${soep_out}\ge_02_CPF.dta", clear  	
 
 *############################
 *#							#
@@ -23,7 +23,7 @@ use "${soep_out}/ge_02_CPF.dta", clear
 *#							#
 *############################
 **--------------------------------------
-** Interview status
+** Intreview status
 **--------------------------------------
 * Sample similar to pequiv (2016-17 differs slightly)
 * Only Befragungsperson (Interviewed) 
@@ -69,7 +69,7 @@ keep if age~=.
 *#	Save					#
 *#							#
 *############################
-save "${soep_out}/ge_03_CPF.dta" , replace
+save "${soep_out}\ge_03_CPF.dta" , replace
 
 
 	

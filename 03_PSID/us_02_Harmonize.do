@@ -16,7 +16,7 @@ https://simba.isr.umich.edu/default.aspx
 ** Open merged dataset
 **-------------------------------------- 
 *** Combined 
-use "${psid_out}/us_01.dta", clear
+use "${psid_out}\us_01.dta", clear
 
 
 **--------------------------------------
@@ -139,7 +139,7 @@ replace	intmonth = intyB2 if intmonth==.
 // rename  age age_c
 // rename  eduy eduy_c
 // rename intyear intyear_c
-// merge 1:1 pid wave using "${psid_out}/us_Merg_03cnef.dta", keep(1 2 3)   
+// merge 1:1 pid wave using "${psid_out}\us_Merg_03cnef.dta", keep(1 2 3)   
 *******
 
 
@@ -477,52 +477,7 @@ gen kidsn_hh17=kidshh // Number of Children Under 18 Living with Family
 //  	lab var kidsn_18   "Number Of Children <18 y.o." 
 // 	lab var kidsn_15   "Number Of Children <15 y.o." 
  	lab var kidsn_hh17   "Number of Children in HH aged 0-17"
-
-
-*** New in CPF 1.52
-* youngest
- 
-recode youngest (999 0 = -1), gen(youngest_hh)
 	
-	lab var youngest_hh  "Age of the youngest HH member"
-	
-*
-recode youngest_hh (1/4=1)(5/18=0) (-1=.), gen(kids_hh_04)
-	lab var kids_hh_04   "Any children in HH aged 0-4?"
-	lab val kids_hh_04   yesno
-
-
-*** Youngest child born 
-* ER32025 - month youngest child born 
-// here we assume/impose months for imprecise responses
-recode  ER32025 ///
-		(21=12) /// winter
-		(22=3)  /// spring
-		(23=7)  /// summer
-		(24=10) /// autumn
-		(98=6) /// DK month but birth year is known
-		(99=.) /// MV
-		, gen(ykid_m)
-
-* ER32026 - year youngest child born 
-recode  ER32026 (9999=.), gen(ykid_y)
-
-* Age of youngest child
-gen auxint=intyear + (intmonth/12) // add months to years
-gen auxkid=ykid_y + (ykid_m/12) 	 // add months to years
-
-gen auxkage = auxint - auxkid 	// age 
-gen auxkage_fy = trunc(auxkage) 	// get full years
-gen auxkage_m = round((auxkage - auxkage_fy) * 12) // get months
-
-replace auxkage_m = . if auxkage<0
-replace auxkage_fy = . if auxkage<0
-
-recode auxkage_fy (0/4=1)(5/max=0) (-1=.), gen(kidsown_04)
-	lab var kidsown_04   "Any own children aged 0-4?"
-	lab val kidsown_04   yesno
-
-
 **--------------------------------------  
 ** People in HH  
 **--------------------------------------
@@ -689,16 +644,16 @@ Census 1970 --ACS 2010'KT_ver1.xlsx'-->
 **** They can be called by the functions below 
 	*** Census 1970 --> isco-08 
 		*step 1: census 70--> ASC 2010
-			do "${psid_syntax}/us_02add_isco_A_step1.do"
+			do "${psid_syntax}\us_02add_isco_A_step1.do"
 		*step 2: ASC 2010 --> SOC 2010
-			do "${psid_syntax}/us_02add_isco_A_step2.do"
+			do "${psid_syntax}\us_02add_isco_A_step2.do"
 		*step 3: SOC 2010 --> isco-08
-			do "${psid_syntax}/us_02add_isco_A_step3.do"
+			do "${psid_syntax}\us_02add_isco_A_step3.do"
 	*** Census 2010 --> isco-08  										 
 		*step 1: census 2010 --> SOC 2010
-			do "${psid_syntax}/us_02add_isco_B_step1.do"
+			do "${psid_syntax}\us_02add_isco_B_step1.do"
 		*step 2: SOC 2010 --> isco-08
-			do "${psid_syntax}/us_02add_isco_B_step2.do"
+			do "${psid_syntax}\us_02add_isco_B_step2.do"
 
 
 
@@ -2102,13 +2057,13 @@ gen temp_migr=.
 
 	
 //because state born only asked consistently since 2013, first fill MV by pid
-	mvdecode temp_migr, mv(-8=.a / 99=.b)
+	mvdecode temp_migr, mv(-8=.a \ 99=.b)
 	
 	bysort pid: egen temp_state_MV=mode(temp_migr), maxmode // identify most common response
 	replace temp_migr=temp_state_MV if temp_migr==. & temp_state_MV>=0 & temp_state_MV<.
 	replace temp_migr=temp_state_MV if temp_migr!=temp_state_MV // correct inconsistent cases	
 	
-	mvencode temp_migr, mv(.a=-8 / .b=99)
+	mvencode temp_migr, mv(.a=-8 \ .b=99)
 
 
 gen migr=.
@@ -2129,13 +2084,13 @@ replace migr=1 if (migr==. | migr<0) & inrange(ER30001, 7001, 9308) // Latino su
 
 
 *fill MV 
-	mvdecode migr, mv(-8=.a / -1=.b)
+	mvdecode migr, mv(-8=.a \ -1=.b)
 
 	bysort pid: egen temp_migr_MV=mode(migr), maxmode // identify most common response
 	replace migr=temp_migr_MV if migr==. & temp_migr_MV>=0 & temp_migr_MV<.
 	replace migr=temp_migr_MV if migr!=temp_migr_MV & temp_migr_MV>=0 // correct a few inconsistent cases	
 	
-	mvencode migr, mv(.a=-8 / .b=-1)
+	mvencode migr, mv(.a=-8 \ .b=-1)
 	
 	replace migr=-8 if migr==. & wavey<1997 //Question not asked before 1997
 
@@ -2161,7 +2116,7 @@ gen temp_cob=.
 	replace temp_cob=mode_temp_cob if temp_cob!=mode_temp_cob // correct inconsistent cases
 
 // COB labels in separate file	
-do "${your_dir}/11_CPF_in_syntax/03_PSID/us_02add_labels_COB.do"
+do "${your_dir}\11_CPF_in_syntax\03_PSID\us_02add_labels_COB.do"
 
 *** Identify valid COB and fill across waves  
 sort pid wave 
@@ -2552,8 +2507,7 @@ wavey country wave1st   marstat5 mlstat5 	///
 livpart parstat6 nvmarr kidsn_hh17 satlife5 satlife10	///
 divor separ widow	///
 isei* siops* wtcs* mps* nempl fedu3 fedu4 medu3 medu4 sampid* ///
-migr* ethn* cob grewup_US   relig* ///
-youngest_hh kids_hh_04 kidsown_04
+migr* ethn* cob grewup_US   relig*
 
 order pid wave intyear   age female  , first
 order isresp href who_resp refer xsqnr w_ind*  sampid*, last
@@ -2564,7 +2518,7 @@ order isresp href who_resp refer xsqnr w_ind*  sampid*, last
 **|=========================================================================|
 label data "CPF_USA v1.5"
 
-save "${psid_out}/us_02_CPF.dta", replace  	
+save "${psid_out}\us_02_CPF.dta", replace  	
 
 	 
 *____________________________________________________________________________
